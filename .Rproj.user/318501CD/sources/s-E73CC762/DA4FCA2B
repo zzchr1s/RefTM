@@ -1,0 +1,25 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1657528539486.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3137186750",
+    "id" : "DA4FCA2B",
+    "lastKnownWriteTime" : 1657528547,
+    "last_content_update" : 1657528547174,
+    "path" : "D:/research/RefTM/R/RefTM.R",
+    "project_path" : "R/RefTM.R",
+    "properties" : {
+        "cursorPosition" : "41,5",
+        "scrollLine" : "16"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

@@ -1,0 +1,25 @@
+useDynLib("RefTM", .registration = TRUE, .fixes = "C_")
+
+import(stm)
+import("methods")
+importFrom("modeltools", "posterior")
+importFrom("stats", "terms", "sd", "coef")
+importFrom("stats4", "logLik")
+importFrom("slam", "as.simple_triplet_matrix", "row_sums", "simple_triplet_matrix")
+importFrom("tm", "as.DocumentTermMatrix", "weightTf")
+
+export("RefTM","RefTM.LDA","RefTM.STM")
+
+
+exportClass("TopicModel",
+            "RefTM.LDA",
+            "LDA_VEMcontrol",
+            "LDA_Gibbscontrol",
+            "OPTcontrol")
+
+exportMethods("logLik",
+              "posterior")
+
+S3method("distHellinger", "default")
+S3method("distHellinger", "simple_triplet_matrix")
+

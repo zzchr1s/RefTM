@@ -1,0 +1,10 @@
+Package: RefTM
+Type: Package
+Title: Reference-guided Topic Modeling of scCAS data
+Version: 0.1.0
+Authors: Zheng ZHANG, Shengquan Chen and Zhixiang Lin
+Maintainer: Zheng Zhang <1155149267@link.cuhk.edu.hk>
+Description: RefTM is a R package for the integrative analysis of scCAS data.
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 7.2.0.9000
