@@ -10,8 +10,8 @@ match_terms <- function(x, model) {
   x
 }
 
-LDA_registry <- list(LDA_VEM.fit = c("VEM", "LDA_VEM", "LDA_VEM.fit"),
-                 LDA_Gibbs.fit = c("Gibbs", "LDA_Gibbs", "LDA_Gibbs.fit"))
+LDA_registry <- list(LDA_VEM1.fit = c("VEM1", "LDA_VEM1", "LDA_VEM1.fit"),
+                 LDA_Gibbs1.fit = c("Gibbs1", "LDA_Gibbs1", "LDA_Gibbs1.fit"))
 
 RefTM.LDA <- function(x, k,  method = "VEM",  k0, bulk_beta,control = NULL,model = NULL, ...)
 {
@@ -47,8 +47,8 @@ RefTM.LDA <- function(x, k,  method = "VEM",  k0, bulk_beta,control = NULL,model
   method(x, k, control,   k0, bulk_beta,model, mycall, ...)
 }
 
-LDA_VEM.fit <- function(x, k, control = NULL,  k0, bulk_beta, model = NULL, call,  ...) {
-  control <- as(control, "LDA_VEMcontrol")
+LDA_VEM1.fit <- function(x, k, control = NULL,  k0, bulk_beta, model = NULL, call,  ...) {
+  control <- as(control, "LDA_VEMcontrol1")
   if (length(control@seed) != control@nstart)
     stop(paste("Need ", control@nstart, " seeds", sep = ""))
   if (length(control@alpha) == 0)  {
@@ -56,7 +56,7 @@ LDA_VEM.fit <- function(x, k, control = NULL,  k0, bulk_beta, model = NULL, call
   }
   if (is.null(model)) {
     if (control@initialize == "model")
-      stop("Need a model of class 'LDA_VEM' for initialization")
+      stop("Need a model of class 'LDA_VEM1' for initialization")
   }
   else control@initialize <- "model"
   if (!control@estimate.beta) control@em@iter.max <- -1L
@@ -101,11 +101,11 @@ LDA_VEM.fit <- function(x, k, control = NULL,  k0, bulk_beta, model = NULL, call
   obj
 }
 
-LDA_Gibbs.fit <- function(x, k, control = NULL,  k0, bulk_beta,model = NULL, call, seedwords = NULL, ...) {
+LDA_Gibbs1.fit <- function(x, k, control = NULL,  k0, bulk_beta,model = NULL, call, seedwords = NULL, ...) {
   if (!is.null(model) && is(control, "list") && !"delta" %in% names(control)) control <- c(control, delta = model@control@delta)
   if (!is.null(model) && is.null(seedwords)) seedwords <- model@seedwords
   if (!is.null(model) && is(control, "list") && !"initialize" %in% names(control)) control <- c(control, initialize = "beta")
-  control <- as(control, "LDA_Gibbscontrol")
+  control <- as(control, "LDA_Gibbscontrol1")
   if (length(control@seed) != control@nstart)
     stop(paste("Need ", control@nstart, " seeds", sep = ""))
   if (length(control@alpha) == 0)  {
@@ -200,7 +200,7 @@ LDA_Gibbs.fit <- function(x, k, control = NULL,  k0, bulk_beta,model = NULL, cal
       obj <- obj[[MAX]]
     } else warning("no finite likelihood")
   } else {
-    obj <- lapply(obj, function(x) new("Gibbs_list", fitted = x))
+    obj <- lapply(obj, function(x) new("Gibbs_list1", fitted = x))
     if (control@nstart == 1) obj <- obj[[1]]
   }
   obj

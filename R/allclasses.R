@@ -1,13 +1,13 @@
 ##**********************************************************
 ## control parameters
 
-setClass("OPTcontrol",
+setClass("OPTcontrol1",
          representation(iter.max = "integer",
                         tol      = "numeric"),
          prototype(iter.max = -1L,
                    tol      = sqrt(.Machine$double.eps)))
 
-setClass("TopicModelcontrol",
+setClass("TopicModelcontrol1",
          representation(seed          = "integer",
                         verbose       = "integer",
                         prefix        = "character",
@@ -40,22 +40,22 @@ init_TopicModelcontrol <- function(.Object, prefix, seed, nstart, ...) {
   list(.Object = .Object, prefix = prefix, seed = seed, nstart = nstart, ... = ...)
 }
 
-setMethod("initialize", "TopicModelcontrol", function(.Object, prefix, seed, nstart, ...) {
+setMethod("initialize", "TopicModelcontrol1", function(.Object, prefix, seed, nstart, ...) {
   args <- init_TopicModelcontrol(.Object, prefix, seed, nstart, ...)
   .Object <- do.call("callNextMethod", args)
   invisible(.Object)
 })
 
-setClass("VEMcontrol",
-         representation(var    = "OPTcontrol",
-                        em     = "OPTcontrol",
+setClass("VEMcontrol1",
+         representation(var    = "OPTcontrol1",
+                        em     = "OPTcontrol1",
                         initialize = "character",
                         "VIRTUAL"),
-         prototype(var        = new("OPTcontrol", iter.max = 500L, tol = 10^-6),
-                   em         = new("OPTcontrol", iter.max = 1000L, tol = 10^-4),
+         prototype(var        = new("OPTcontrol1", iter.max = 500L, tol = 10^-6),
+                   em         = new("OPTcontrol1", iter.max = 1000L, tol = 10^-4),
                    initialize = "random"))
 
-setMethod("initialize", "VEMcontrol", function(.Object, initialize = "random", ...) {
+setMethod("initialize", "VEMcontrol1", function(.Object, initialize = "random", ...) {
   initialize <- match.arg(initialize, c("random", "seeded", "model"))
   args <- init_TopicModelcontrol(.Object, ...)
   .Object <- do.call("callNextMethod",
@@ -63,29 +63,29 @@ setMethod("initialize", "VEMcontrol", function(.Object, initialize = "random", .
   invisible(.Object)
 })
 
-setClass("LDAcontrol",
+setClass("LDAcontrol1",
          representation(alpha = "numeric",
                         "VIRTUAL"),
-         contains = "TopicModelcontrol")
+         contains = "TopicModelcontrol1")
 
-setClass("LDA_VEMcontrol",
+setClass("LDA_VEMcontrol1",
          representation(estimate.alpha   = "logical"),
-         contains = c("LDAcontrol", "VEMcontrol"),
+         contains = c("LDAcontrol1", "VEMcontrol1"),
          prototype(estimate.alpha = TRUE))
 
-setMethod("initialize", "LDA_VEMcontrol", function(.Object, prefix, initialize = "random", ...) {
+setMethod("initialize", "LDA_VEMcontrol1", function(.Object, prefix, initialize = "random", ...) {
   if (missing(prefix)) prefix <- tempfile()
   .Object <- callNextMethod(.Object = .Object, prefix = prefix, initialize = initialize, ...)
   invisible(.Object)
 })
 
-setClass("LDA_Gibbscontrol",
+setClass("LDA_Gibbscontrol1",
     representation(delta  = "numeric",
                    iter   = "integer",
                    thin   = "integer",
                    burnin = "integer",
                    initialize = "character"),
-         contains = "LDAcontrol",
+         contains = "LDAcontrol1",
          prototype(delta   = 0.1,
                    verbose = 0L,
                    iter    = 2000L,
@@ -94,7 +94,7 @@ setClass("LDA_Gibbscontrol",
                    best    = TRUE,
                    initialize = "random"))
 
-setMethod("initialize", "LDA_Gibbscontrol", function(.Object, initialize = "random", seed = as.integer(NA), ...) {
+setMethod("initialize", "LDA_Gibbscontrol1", function(.Object, initialize = "random", seed = as.integer(NA), ...) {
   initialize <- match.arg(initialize, c("random", "beta", "z"))
   .Object <- callNextMethod(.Object = .Object, initialize = initialize, seed = seed, ...)
   if (length(.Object@thin) == 0) .Object@thin <- .Object@iter
@@ -104,10 +104,10 @@ setMethod("initialize", "LDA_Gibbscontrol", function(.Object, initialize = "rand
 ##**********************************************************
 ## Topic Models Objects
 
-setClass("TopicModel",
+setClass("TopicModel1",
    representation(call            = "call",
                   Dim             = "integer",
-                  control         = "TopicModelcontrol",
+                  control         = "TopicModelcontrol1",
                   k               = "integer",
                   terms           = "ANY",
                   documents       = "ANY",
@@ -120,35 +120,35 @@ setClass("TopicModel",
                   n               = "integer",
                   "VIRTUAL"))
 
-setClass("VEM",
-         contains = "TopicModel",
+setClass("VEM1",
+         contains = "TopicModel1",
          representation("VIRTUAL"))
 
 setClass("RefTM.LDA",
          representation(alpha = "numeric",
                         "VIRTUAL"),
-         contains = "TopicModel")
+         contains = "TopicModel1")
 
-setClass("LDA_VEM",
+setClass("LDA_VEM1",
          representation(),
-         contains = c("RefTM.LDA", "VEM"),
-         prototype(control = new("LDA_VEMcontrol")))
+         contains = c("RefTM.LDA", "VEM1"),
+         prototype(control = new("LDA_VEMcontrol1")))
 
-setClass("Gibbs",
-         contains = "TopicModel",
+setClass("Gibbs1",
+         contains = "TopicModel1",
          representation("VIRTUAL"))
 
-setClass("LDA_Gibbs",
+setClass("LDA_Gibbs1",
          representation(seedwords = "ANY",
                         z = "integer"),
-         contains = c("RefTM.LDA", "Gibbs"),
-         prototype(control = new("LDA_Gibbscontrol")))
+         contains = c("RefTM.LDA", "Gibbs1"),
+         prototype(control = new("LDA_Gibbscontrol1")))
 
-setClass("Gibbs_list",
+setClass("Gibbs_list1",
          representation(fitted = "list"))
 
 
-setMethod("show", signature(object = "TopicModel"), function(object) {
+setMethod("show", signature(object = "TopicModel1"), function(object) {
   cat("A", class(object), "topic model with", object@k, "topics.\n")
 })
 

@@ -1,4 +1,4 @@
-setMethod("posterior", signature(object = "TopicModel", newdata = "missing"),
+setMethod("posterior", signature(object = "TopicModel1", newdata = "missing"),
 function(object, newdata, ...) {
   terms <- exp(object@beta)
   dimnames(terms) <- list(seq_len(object@k), object@terms)
@@ -8,7 +8,7 @@ function(object, newdata, ...) {
        topics = topics)
 })
 
-setMethod("posterior", signature(object = "TopicModel", newdata = "ANY"),
+setMethod("posterior", signature(object = "TopicModel1", newdata = "ANY"),
 function(object, newdata, control = list(), ...) {
   if (!is(newdata, "simple_triplet_matrix"))  {
     newdata <- as.simple_triplet_matrix(newdata)
@@ -28,10 +28,10 @@ function(object, newdata, control = list(), ...) {
 setGeneric("terms")
 setGeneric("topics", function(x, ...) standardGeneric("topics"))
 
-setMethod("topics", signature(x = "TopicModel"), function(x, k, threshold, ...)
+setMethod("topics", signature(x = "TopicModel1"), function(x, k, threshold, ...)
   most_likely(x, "topics", k, threshold, ...))
 
-setMethod("terms", signature(x = "TopicModel"), function(x, k, threshold, ...)
+setMethod("terms", signature(x = "TopicModel1"), function(x, k, threshold, ...)
   most_likely(x, "terms", k, threshold, ...))
 
 most_likely <- function(x, which = c("terms", "topics"), k, threshold, ...)
@@ -63,14 +63,14 @@ most_likely <- function(x, which = c("terms", "topics"), k, threshold, ...)
 
 setGeneric("get_df", function(object, ...) standardGeneric("get_df"))
 
-setMethod("get_df", signature(object="LDA_Gibbs"),
+setMethod("get_df", signature(object="LDA_Gibbs1"),
 function(object, ...) length(object@beta))
 
-setMethod("get_df", signature(object="LDA_VEM"),
+setMethod("get_df", signature(object="LDA_VEM1"),
 function(object, ...)
   as.integer(object@control@estimate.alpha) + length(object@beta))
 
-setMethod("logLik", signature(object="TopicModel"),
+setMethod("logLik", signature(object="TopicModel1"),
 function(object, ...) {
   val <- sum(object@loglikelihood)
   attr(val, "df") <- get_df(object)
@@ -79,7 +79,7 @@ function(object, ...) {
   val
 })
 
-setMethod("logLik", signature(object="Gibbs_list"),
+setMethod("logLik", signature(object="Gibbs_list1"),
 function(object, ...) sapply(object@fitted, logLik))
 
 distHellinger <- function(x, y, ...) UseMethod("distHellinger")
@@ -160,7 +160,7 @@ setOldClass("simple_triplet_matrix")
 
 setGeneric("perplexity", function(object, newdata, ...) standardGeneric("perplexity"))
 
-setMethod("perplexity", signature(object = "VEM", newdata = "missing"), function(object, newdata, ...)
+setMethod("perplexity", signature(object = "VEM1", newdata = "missing"), function(object, newdata, ...)
   exp(-as.numeric(logLik(object))/object@n))
 
 setMethod("perplexity", signature(object = "ANY", newdata = "matrix"), function(object, newdata, ...)
@@ -171,7 +171,7 @@ setMethod("perplexity", signature(object = "ANY", newdata = "DocumentTermMatrix"
   perplexity(object, newdata, ...)
 })
 
-setMethod("perplexity", signature(object = "VEM", newdata = "simple_triplet_matrix"), function(object, newdata, control, ...) {
+setMethod("perplexity", signature(object = "VEM1", newdata = "simple_triplet_matrix"), function(object, newdata, control, ...) {
   CLASS <- strsplit(class(object), "_")[[1]]
   if (missing(control)) {
     control <- object@control
@@ -184,7 +184,7 @@ setMethod("perplexity", signature(object = "VEM", newdata = "simple_triplet_matr
   perplexity(object_inf, ...)
 })
 
-setMethod("perplexity", signature(object = "Gibbs", newdata = "simple_triplet_matrix"), function(object, newdata, control, use_theta = TRUE, estimate_theta = TRUE, ...) {
+setMethod("perplexity", signature(object = "Gibbs1", newdata = "simple_triplet_matrix"), function(object, newdata, control, use_theta = TRUE, estimate_theta = TRUE, ...) {
   if (use_theta) {
     if (estimate_theta) {
       CLASS <- strsplit(class(object), "_")[[1]]
@@ -203,7 +203,7 @@ setMethod("perplexity", signature(object = "Gibbs", newdata = "simple_triplet_ma
   }
 })
 
-setMethod("perplexity", signature(object = "Gibbs_list", newdata = "simple_triplet_matrix"), function(object, newdata, control, use_theta = TRUE, estimate_theta = TRUE, ...) {
+setMethod("perplexity", signature(object = "Gibbs_list1", newdata = "simple_triplet_matrix"), function(object, newdata, control, use_theta = TRUE, estimate_theta = TRUE, ...) {
   if (use_theta) {
     if (estimate_theta) {
       CLASS <- strsplit(class(object@fitted[[1]]), "_")[[1]]
@@ -231,7 +231,7 @@ setMethod("perplexity", signature(object = "Gibbs_list", newdata = "simple_tripl
 })
 
 setMethod("perplexity", signature(object = "list", newdata = "missing"), function(object, newdata, ...) {
-  if (any(!sapply(object, inherits, "VEM"))) stop("if newdata is missing only VEM objects can be used")
+  if (any(!sapply(object, inherits, "VEM1"))) stop("if newdata is missing only VEM objects can be used")
   exp(-mean(sapply(object, logLik))/object[[1]]@n)
 })
 

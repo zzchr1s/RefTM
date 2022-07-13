@@ -12,11 +12,11 @@ importFrom("tm", "as.DocumentTermMatrix", "weightTf")
 export("RefTM","RefTM.LDA","RefTM.STM","RefTM_postprocess")
 
 
-exportClass("TopicModel",
+exportClass("TopicModel1",
             "RefTM.LDA",
-            "LDA_VEMcontrol",
-            "LDA_Gibbscontrol",
-            "OPTcontrol")
+            "LDA_VEMcontrol1",
+            "LDA_Gibbscontrol1",
+            "OPTcontrol1")
 
 exportMethods("logLik",
               "posterior")
