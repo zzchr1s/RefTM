@@ -13,9 +13,9 @@ RefTM <- function(sc_data, ref_data, k1 = 5, k2 = NULL, workflow = "LDA", covari
       k <- k1 + c(0,2,5,10,15,20)
       models <- list()
       perplex <- c()
-      for (i in 1:5) {
-        models[i] <- RefTM.LDA(sc_data, k = k[i], method = "VEM", k0 = k1, bulk_beta = model_ref@beta, control = list(estimate.alpha = F))
-        perplex[i] <- perplexity(models[i])
+      for (i in 1:6) {
+        models[[i]] <- RefTM.LDA(sc_data, k = k[i], method = "VEM", k0 = k1, bulk_beta = model_ref@beta, control = list(estimate.alpha = F))
+        perplex[i] <- perplexity(models[[i]])
       }
       log.lik <- data.frame(topics = k, LL = perplex)
       log.lik$first_derivative <- c(-Inf, (diff(log.lik$LL) / diff(log.lik$topics)))
@@ -23,7 +23,7 @@ RefTM <- function(sc_data, ref_data, k1 = 5, k2 = NULL, workflow = "LDA", covari
       par(bty = 'n')
       plot(log.lik$topics, log.lik$LL, xlab="Number of topics", ylab="perplexity", type='o', pch=16, col='black', main='Model selection')
       points(log.lik$topics[which(log.lik$second_derivative == max(log.lik$second_derivative))], log.lik$LL[which(log.lik$second_derivative == max(log.lik$second_derivative))], pch=4, col='red', lwd = 7)
-      model_sc <- models[which(log.lik$second_derivative == max(log.lik$second_derivative))]
+      model_sc <- models[[which(log.lik$second_derivative == max(log.lik$second_derivative))]]
     }
   }else
 
@@ -55,9 +55,9 @@ RefTM <- function(sc_data, ref_data, k1 = 5, k2 = NULL, workflow = "LDA", covari
       k <- k1 + c(0,2,5,10,15,20)
       models <- list()
       perplex <- c()
-      for (i in 1:5) {
-        models[i] <- RefTM.STM(getCorpus(t(sc_data)), as.character(1:dim(sc_data)[1]), K = k[i], prevalence = ~covariate, refBeta = exp(model_ref$beta$logbeta[[1]]))
-        perplex[i] <- perp(models[i])
+      for (i in 1:6) {
+        models[[i]] <- RefTM.STM(getCorpus(t(sc_data)), as.character(1:dim(sc_data)[1]), K = k[i], prevalence = ~covariate, refBeta = exp(model_ref$beta$logbeta[[1]]))
+        perplex[i] <- perp(models[[i]])
       }
       log.lik <- data.frame(topics = k, LL = perplex)
       log.lik$first_derivative <- c(-Inf, (diff(log.lik$LL) / diff(log.lik$topics)))

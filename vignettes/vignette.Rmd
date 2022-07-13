@@ -25,5 +25,13 @@ library(RefTM)
 
 ```{r}
 sc_data <- CLPLMPPMPP_sc_data
-ref_data <- CLPLMPPMPP_bulk_data
+ref_data <- CLPLMPPMPP_ref_data
 cell_label <- CLPLMPPMPP_label_mat
+```
+
+### Interpreting the models
+
+```{r,eval=TRUE, results='hide', message=FALSE}
+set.seed(2022)
+result <- RefTM(sc_data,ref_data,workflow = "STM",covariate = as.numeric(as.factor(CLPLMPPMPP_label_mat)))
+```
