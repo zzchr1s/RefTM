@@ -24,6 +24,6 @@ library(RefTM)
 ### Input data
 
 ```{r}
-sc_data <- donorBM0828_sc_data
+sc_data <- CLPLMPPMPP_sc_data
 ref_data <- CLPLMPPMPP_bulk_data
 cell_label <- CLPLMPPMPP_label_mat
