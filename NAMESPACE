@@ -1,6 +1,7 @@
 useDynLib("RefTM", .registration = TRUE, .fixes = "C_")
 
 import(stm)
+import(M3C)
 import("methods")
 importFrom("modeltools", "posterior")
 importFrom("stats", "terms", "sd", "coef")
@@ -8,7 +9,7 @@ importFrom("stats4", "logLik")
 importFrom("slam", "as.simple_triplet_matrix", "row_sums", "simple_triplet_matrix")
 importFrom("tm", "as.DocumentTermMatrix", "weightTf")
 
-export("RefTM","RefTM.LDA","RefTM.STM")
+export("RefTM","RefTM.LDA","RefTM.STM","RefTM_postprocess")
 
 
 exportClass("TopicModel",

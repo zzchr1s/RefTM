@@ -65,7 +65,7 @@ RefTM <- function(sc_data, ref_data, k1 = 5, k2 = NULL, workflow = "LDA", covari
       par(bty = 'n')
       plot(log.lik$topics, log.lik$LL, xlab="Number of topics", ylab="perplexity", type='o', pch=16, col='black', main='Model selection')
       points(log.lik$topics[which(log.lik$second_derivative == max(log.lik$second_derivative))], log.lik$LL[which(log.lik$second_derivative == max(log.lik$second_derivative))], pch=4, col='red', lwd = 7)
-      model_sc <- models[which(log.lik$second_derivative == max(log.lik$second_derivative))]
+      model_sc <- models[[which(log.lik$second_derivative == max(log.lik$second_derivative))]]
     }
   }
   return(model_sc = model_sc)

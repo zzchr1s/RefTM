@@ -13,7 +13,41 @@ You can install the released version of package RefTM from Github:
 devtools::install_github("zzchr1s/RefTM")
 ```
 
-## A. RefTM on scATAC data guided by bulk data
+## A. RefTM on scATAC data guided by aggregating single-cell data
+
+First, load package RefTM:
+
+```{r}
+library(RefTM)
+```
+
+### Input data
+
+```{r}
+sc_data <- forebrain_sc_data
+ref_data <- forebrain_ref_data
+cell_label <- forebrain_label_mat
+```
+
+
+### Modeling
+
+```{r,eval=TRUE, results='hide', message=FALSE}
+set.seed(2022)
+result <- RefTM(sc_data,ref_data)
+```
+
+### Visualization
+
+#### Visualization of shared latent topics between reference data and scCAS data
+
+M3C::tsne()
+
+#### Visualization of unique latent topics in scCAS data
+
+M3C::tsne()
+
+## B. RefTM on scATAC data guided by bulk data and including covariates
 
 First, load package RefTM:
 
@@ -29,9 +63,17 @@ ref_data <- CLPLMPPMPP_ref_data
 cell_label <- CLPLMPPMPP_label_mat
 ```
 
-### Interpreting the models
+### Modeling
 
 ```{r,eval=TRUE, results='hide', message=FALSE}
 set.seed(2022)
 result <- RefTM(sc_data,ref_data,workflow = "STM",covariate = as.numeric(as.factor(CLPLMPPMPP_label_mat)))
 ```
+
+
+
+
+
+
+
+
