@@ -484,7 +484,7 @@ SEXP rlda(SEXP i, SEXP j, SEXP v, SEXP nrow, SEXP ncol,
   }
 
   // construct return object
-  PROTECT(cls = MAKE_CLASS("LDA_VEM"));
+  PROTECT(cls = MAKE_CLASS("LDA_VEM1"));
   PROTECT(ans = NEW_OBJECT(cls));
   ans = returnObjectLDA(ans, model, corpus, phi, var_gamma, llh, iter, logLiks, keep_iter);
 

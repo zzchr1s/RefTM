@@ -14,7 +14,7 @@ RefTM <- function(sc_data, ref_data, k1 = 5, k2 = NULL, workflow = "LDA", covari
       models <- list()
       perplex <- c()
       for (i in 1:6) {
-        models[[i]] <- RefTM.LDA(sc_data, k = k[i], method = "VEM", k0 = k1, bulk_beta = model_ref@beta, control = list(estimate.alpha = F))
+        models[[i]] <- RefTM.LDA(t(sc_data), k = k[i], method = "VEM", k0 = k1, bulk_beta = model_ref@beta, control = list(estimate.alpha = F))
         perplex[i] <- perplexity(models[[i]])
       }
       log.lik <- data.frame(topics = k, LL = perplex)

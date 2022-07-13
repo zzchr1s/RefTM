@@ -231,7 +231,7 @@ SEXP rGibbslda(SEXP i, SEXP j, SEXP v, SEXP nrow, SEXP ncol,
 		    init_z,
             REAL(refBeta));
   // construct return object
-  PROTECT(cls = MAKE_CLASS("LDA_Gibbs"));
+  PROTECT(cls = MAKE_CLASS("LDA_Gibbs1"));
   PROTECT(ans = NEW_OBJECT(cls));
   ans = returnObjectGibbsLDA(ans, model);
   PutRNGstate();
