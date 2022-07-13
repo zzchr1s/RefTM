@@ -1,0 +1,15 @@
+---
+title: "vignette"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{vignette}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+## HEADING
+**introduction**
+
+# ```{r setup, include=FALSE}
+# library(RefTM)
+# ```
