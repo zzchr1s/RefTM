@@ -7,9 +7,23 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-## HEADING
-**introduction**
+# Installation
+You can install the released version of package RefTM from Github:
+```javascript
+devtools::install_github("zzchr1s/RefTM")
+```
 
-# ```{r setup, include=FALSE}
-# library(RefTM)
-# ```
+## A. RefTM on scATAC data guided by bulk data
+
+First, load package RefTM:
+
+```{r}
+library(RefTM)
+```
+
+### Input data
+
+```{r}
+sc_data <- donorBM0828_sc_data
+ref_data <- CLPLMPPMPP_bulk_data
+cell_label <- CLPLMPPMPP_label_mat
