@@ -1,4 +1,4 @@
-RefTM_tsne = function(mat,label,donor = NULL,title = NULL,seed = 1,perplexity = 30,size = 2,legend = FALSE,palette = NULL){
+RefTM_tsne = function(mat,label,donor = NULL,title = NULL,seed = 1,perplexity = 30,size = 2,legend = TRUE,palette = NULL){
   set.seed(seed)
   tsne.info = Rtsne::Rtsne(mat,perplexity = perplexity)
   colnames(tsne.info$Y) = c("tSNE_1","tSNE_2")
@@ -18,3 +18,4 @@ RefTM_tsne = function(mat,label,donor = NULL,title = NULL,seed = 1,perplexity = 
   }
   p
 }
+
