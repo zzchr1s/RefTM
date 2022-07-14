@@ -7,7 +7,7 @@ RefTM <- function(sc_data, ref_data, k1 = 5, k2 = NULL, workflow = "LDA", covari
     if(!is.null(k2)){
       print(k2)
       sprintf("Number of topics is fixed to be %s.", k1+5)
-      model_sc <- RefTM.LDA(t(sc_data), k = k1+k2, method = "VEM", k0 = k1, bulk_beta = model_ref@beta, control = list(estimate.alpha = F))
+      model_sc <- RefTM.LDA(t(sc_data), k = k1+k2, method = "VEM", k0 = k1, bulk_beta = model_ref@beta, control = list(estimate.alpha = F,var = list(iter.max = 1000, tol = 10^-6),em = list(iter.max = 1000, tol = 10^-6)))
     }else{
       print("Select the best model.")
       k <- k1 + c(0,2,5,10,15,20)

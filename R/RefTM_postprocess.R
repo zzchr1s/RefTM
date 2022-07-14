@@ -1,5 +1,5 @@
-RefTM_postprocess = function(object,k1,k2,erase.BF = TRUE){
-  if(class(object)[[1]] == "LDA_VEM"){
+RefTM_postprocess = function(object,k1,erase.BF = TRUE){
+  if(class(object)[[1]] == "LDA_VEM1"){
     theta = object@gamma
     theta[,1:k1] =theta[,1:k1]*(sum(colSums(theta)[-(1:k1)])/sum(colSums(theta)[1:k1]))
   }else if(class(object) == "STM" & erase.BF == TRUE){
