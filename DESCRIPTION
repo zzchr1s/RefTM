@@ -12,3 +12,21 @@ Suggests:
     knitr,
     rmarkdown
 VignetteBuilder: knitr
+Imports: 
+    stats,
+    Rtsne,
+    chromVAR,
+    motifmatchr,
+    SummarizedExperiment,
+    BSgenome.Mmusculus.UCSC.mm9,
+    Seurat,
+    JASPAR2016,
+    ggplot2,
+    ggthemes,
+    ggpubr,
+    stm, 
+    stats4, 
+    methods, 
+    modeltools, 
+    slam, 
+    tm (>= 0.6)

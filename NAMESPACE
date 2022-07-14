@@ -9,7 +9,7 @@ importFrom("stats4", "logLik")
 importFrom("slam", "as.simple_triplet_matrix", "row_sums", "simple_triplet_matrix")
 importFrom("tm", "as.DocumentTermMatrix", "weightTf")
 
-export("RefTM","RefTM.LDA","RefTM.STM","RefTM_postprocess","RefTM_tsne")
+export("RefTM","RefTM.LDA","RefTM.STM","RefTM_postprocess","RefTM_tsne","RefTM_motif")
 
 
 exportClass("TopicModel1",
