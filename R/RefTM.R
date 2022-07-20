@@ -1,7 +1,7 @@
 RefTM <- function(sc_data, ref_data, k1 = 5, k2 = NULL, workflow = "LDA", covariate = NULL){
 ##RefTM-LDA workflow
   if(workflow == "LDA"){
-    model_ref <- RefTM.LDA(ref_data, k = k1, k0 = 0, bulk_beta = NULL)
+    model_ref <- RefTM.LDA(ref_data, k = k1, k0 = 0, bulk_beta = 0, control = list(var = list(iter.max = 1000, tol = 10^-6),em = list(iter.max = 1000, tol = 10^-6)))
     print("Finished modeling the reference data.")
     print(k2)
     if(!is.null(k2)){
@@ -14,7 +14,7 @@ RefTM <- function(sc_data, ref_data, k1 = 5, k2 = NULL, workflow = "LDA", covari
       models <- list()
       perplex <- c()
       for (i in 1:6) {
-        models[[i]] <- RefTM.LDA(t(sc_data), k = k[i], method = "VEM", k0 = k1, bulk_beta = model_ref@beta, control = list(estimate.alpha = F))
+        models[[i]] <- RefTM.LDA(t(sc_data), k = k[i], method = "VEM", k0 = k1, bulk_beta = model_ref@beta, control = list(estimate.alpha = F,var = list(iter.max = 1000, tol = 10^-6),em = list(iter.max = 1000, tol = 10^-6)))
         perplex[i] <- perplexity(models[[i]])
       }
       log.lik <- data.frame(topics = k, LL = perplex)
