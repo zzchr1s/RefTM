@@ -1,21 +1,59 @@
 RefTM <- function(sc_data, ref_data, k1 = 5, k2 = NULL, workflow = "LDA", covariate = NULL){
+  docvoc2dtm = function(doc_voc){
+    if(length(which(colSums(doc_voc) == 0))>0){
+      doc_voc = doc_voc[,-which(colSums(doc_voc) == 0)]
+    }
+    library(slam)
+    dtm = as.simple_triplet_matrix(doc_voc)
+    dimnames(dtm) = list(Docs = 1:dtm$nrow, Terms = 1:dtm$ncol)
+    return(dtm)
+  }
+  perplexity = function(X, topic_word_distribution, doc_topic_distribution) {
+    EPS = 1e-16
+    p = X@p
+    j = X@i
+    x = X@x
+    ll = 0
+    for(i in 1:nrow(X)) {
+      p1 = p[[i]]
+      p2 = p[[i + 1L]]
+      pointer = p1 + seq_len(p2 - p1)
+      word_indices = j[pointer] + 1L
+      word_counds = x[pointer]
+      dot_prod = doc_topic_distribution[i, , drop = FALSE] %*%
+        topic_word_distribution[ , word_indices, drop = FALSE]
+      ll = ll +  log(dot_prod + EPS) %*% word_counds
+    }
+    # drop dimensions
+    ll = as.numeric(ll)
+    exp(-ll / sum(X@x))
+  }
 ##RefTM-LDA workflow
   if(workflow == "LDA"){
-    model_ref <- RefTM.LDA(ref_data, k = k1, k0 = 0, bulk_beta = 0, control = list(var = list(iter.max = 1000, tol = 10^-6),em = list(iter.max = 1000, tol = 10^-6)))
+    library(topicmodels)
+    model_ref <- LDA(ref_data, k = k1, control = list(em = list(iter.max = 1000,tol = 10^-5)))
     print("Finished modeling the reference data.")
-    print(k2)
     if(!is.null(k2)){
       print(k2)
       sprintf("Number of topics is fixed to be %s.", k1+5)
-      model_sc <- RefTM.LDA(t(sc_data), k = k1+k2, method = "VEM", k0 = k1, bulk_beta = model_ref@beta, control = list(estimate.alpha = F,var = list(iter.max = 1000, tol = 10^-6),em = list(iter.max = 1000, tol = 10^-6)))
+      if(length(which(rowSums(sc_data) == 0)) != 0){
+        model_sc = lda_svi(docvoc2dtm(t(sc_data)),batchsize = 100,K = k1+k2,K0 = k1,maxiter = 1000,refBeta = exp(model_ref@beta[,-which(rowSums(sc_data) == 0)]),passes = 2)
+      }else{
+        model_sc = lda_svi(docvoc2dtm(t(sc_data)),batchsize = 100,K = k1+k2,K0 = k1,maxiter = 1000,refBeta = exp(model_ref@beta),passes = 2)
+      }
     }else{
       print("Select the best model.")
-      k <- k1 + c(0,2,5,10,15,20)
+      k = k1 + c(0, 2, 5, 10, 15, 20)
       models <- list()
       perplex <- c()
       for (i in 1:6) {
-        models[[i]] <- RefTM.LDA(t(sc_data), k = k[i], method = "VEM", k0 = k1, bulk_beta = model_ref@beta, control = list(estimate.alpha = F,var = list(iter.max = 1000, tol = 10^-6),em = list(iter.max = 1000, tol = 10^-6)))
-        perplex[i] <- perplexity(models[[i]])
+        if(length(which(rowSums(sc_data) == 0)) != 0){
+          models[[i]] = lda_svi(docvoc2dtm(t(sc_data)),batchsize = 100,K = k,K0 = k1,maxiter = 1000,refBeta = exp(model_ref@beta[,-which(rowSums(sc_data) == 0)]),passes = 2)
+        }else{
+          models[[i]] = lda_svi(docvoc2dtm(t(sc_data)),batchsize = 100,K = k,K0 = k1,maxiter = 1000,refBeta = exp(model_ref@beta),passes = 2)
+        }
+        perplex[i] <- perplexity(as(t(sc_data),"sparseMatrix"),models[[i]]$beta,models[[i]]$theta)
+
       }
       log.lik <- data.frame(topics = k, LL = perplex)
       log.lik$first_derivative <- c(-Inf, (diff(log.lik$LL) / diff(log.lik$topics)))
